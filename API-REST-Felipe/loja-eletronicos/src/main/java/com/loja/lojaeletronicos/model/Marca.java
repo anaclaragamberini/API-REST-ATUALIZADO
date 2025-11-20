@@ -1,4 +1,5 @@
 package com.loja.lojaeletronicos.model;
+import java.util.List;
 
 import jakarta.persistence.*;
 
@@ -10,6 +11,9 @@ public class Marca {
     private Long id;
 
     private String nome;
+
+    @OneToMany(mappedBy = "marca")
+    private List<Produto> produtos;
 
     public Marca() {}
 
