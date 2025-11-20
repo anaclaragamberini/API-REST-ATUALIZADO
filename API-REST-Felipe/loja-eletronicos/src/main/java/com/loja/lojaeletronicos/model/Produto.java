@@ -39,7 +39,6 @@ public class Produto {
     public String getCategoria() { return categoria; }
     public void setCategoria(String categoria) { this.categoria = categoria; }
 
-
     public String getDescricao() { return descricao; }
     public void setDescricao(String descricao) { this.descricao = descricao; }
 
@@ -48,4 +47,7 @@ public class Produto {
 
     public double getPreco() { return preco; }
     public void setPreco(double preco) { this.preco = preco; }
+
+    public Marca getMarca() { return marca; }
+    public void setMarca(Marca marca) { this.marca = marca; }
 }
