@@ -1,6 +1,8 @@
 package com.loja.lojaeletronicos.controller;
 
+import com.loja.lojaeletronicos.model.Marca;
 import com.loja.lojaeletronicos.model.Produto;
+import com.loja.lojaeletronicos.repository.MarcaRepository;
 import com.loja.lojaeletronicos.repository.ProdutoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -15,13 +17,32 @@ public class ProdutoController {
     @Autowired
     private ProdutoRepository produtoRepository;
 
+    @Autowired
+    private MarcaRepository marcaRepository;
+
     @PostMapping
     public Produto criarProduto(@RequestBody Produto produto) {
+
+        if (produto.getMarca() != null && produto.getMarca().getId() != null) {
+            Marca marca = marcaRepository.findById(produto.getMarca().getId())
+                    .orElseThrow(() -> new RuntimeException("Marca não encontrada"));
+            produto.setMarca(marca);
+        }
+
         return produtoRepository.save(produto);
     }
 
     @PostMapping("/lote")
     public List<Produto> criarProdutos(@RequestBody List<Produto> produtos) {
+
+        for (Produto produto : produtos) {
+            if (produto.getMarca() != null && produto.getMarca().getId() != null) {
+                Marca marca = marcaRepository.findById(produto.getMarca().getId())
+                        .orElseThrow(() -> new RuntimeException("Marca não encontrada"));
+                produto.setMarca(marca);
+            }
+        }
+
         return produtoRepository.saveAll(produtos);
     }
 
@@ -38,15 +59,26 @@ public class ProdutoController {
     @PutMapping("/{id}")
     public Produto atualizarProduto(@PathVariable Long id, @RequestBody Produto novoProduto) {
         return produtoRepository.findById(id).map(produto -> {
+
             produto.setNome(novoProduto.getNome());
             produto.setCategoria(novoProduto.getCategoria());
             produto.setDescricao(novoProduto.getDescricao());
             produto.setEstoque(novoProduto.getEstoque());
             produto.setPreco(novoProduto.getPreco());
+
+            if (novoProduto.getMarca() != null && novoProduto.getMarca().getId() != null) {
+                Marca marca = marcaRepository.findById(novoProduto.getMarca().getId())
+                        .orElseThrow(() -> new RuntimeException("Marca não encontrada"));
+                produto.setMarca(marca);
+            }
+
             return produtoRepository.save(produto);
+
         }).orElseThrow(() -> new RuntimeException("Produto não encontrado"));
     }
 
+
+    // --------------------------- ATUALIZAR PARCIAL ----------------------------
     @PatchMapping("/{id}")
     public Produto atualizarParcial(@PathVariable Long id, @RequestBody Produto atualizacoes) {
         return produtoRepository.findById(id).map(produto -> {
@@ -57,9 +89,17 @@ public class ProdutoController {
             if (atualizacoes.getEstoque() != 0) produto.setEstoque(atualizacoes.getEstoque());
             if (atualizacoes.getPreco() != 0) produto.setPreco(atualizacoes.getPreco());
 
+            if (atualizacoes.getMarca() != null && atualizacoes.getMarca().getId() != null) {
+                Marca marca = marcaRepository.findById(atualizacoes.getMarca().getId())
+                        .orElseThrow(() -> new RuntimeException("Marca não encontrada"));
+                produto.setMarca(marca);
+            }
+
             return produtoRepository.save(produto);
+
         }).orElseThrow(() -> new RuntimeException("Produto não encontrado"));
     }
+
 
     @DeleteMapping("/{id}")
     public void deletarProduto(@PathVariable Long id) {
