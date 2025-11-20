@@ -40,7 +40,6 @@ public class ProdutoController {
         return produtoRepository.findById(id).map(produto -> {
             produto.setNome(novoProduto.getNome());
             produto.setCategoria(novoProduto.getCategoria());
-            produto.setMarca(novoProduto.getMarca());
             produto.setDescricao(novoProduto.getDescricao());
             produto.setEstoque(novoProduto.getEstoque());
             produto.setPreco(novoProduto.getPreco());
@@ -54,7 +53,6 @@ public class ProdutoController {
 
             if (atualizacoes.getNome() != null) produto.setNome(atualizacoes.getNome());
             if (atualizacoes.getCategoria() != null) produto.setCategoria(atualizacoes.getCategoria());
-            if (atualizacoes.getMarca() != null) produto.setMarca(atualizacoes.getMarca());
             if (atualizacoes.getDescricao() != null) produto.setDescricao(atualizacoes.getDescricao());
             if (atualizacoes.getEstoque() != 0) produto.setEstoque(atualizacoes.getEstoque());
             if (atualizacoes.getPreco() != 0) produto.setPreco(atualizacoes.getPreco());

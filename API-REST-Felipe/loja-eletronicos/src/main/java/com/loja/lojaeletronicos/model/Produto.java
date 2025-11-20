@@ -20,7 +20,7 @@ public class Produto {
 
     public Produto() {}
 
-    public Produto(String nome, String categoria, String marca, String descricao,
+    public Produto(String nome, String categoria, String descricao,
                    int estoque, double preco) {
         this.nome = nome;
         this.categoria = categoria;
