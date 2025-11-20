@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 public class Produto {
 
     @ManyToOne
+    @JoinColumn(name = "id_marca")
     private Marca marca;
 
     @Id
